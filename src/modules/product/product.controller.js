@@ -47,8 +47,8 @@ export const createProduct = async (req, res, next) => {
         brand,
         price,
         discount,
-        size:size,//JSON.parse(size),
-        colors:colors,//JSON.parse(colors),
+        size: size,//JSON.parse(size),
+        colors: colors,//JSON.parse(colors),
         stock,
         // todo createdBy updatedBy
     })
@@ -61,4 +61,9 @@ export const createProduct = async (req, res, next) => {
         success: true,
         data: createdProduct
     })
+}
+
+export const getProducts = async (req, res, next) => {
+    const products = await Product.find()
+    return res.json(products)
 }

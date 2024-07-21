@@ -3,7 +3,7 @@ import { fileUpload } from "../../utils/multer.js";
 import { isValid } from "../../middleware/validation.js";
 import { createProductVal } from "./product.validation.js";
 import { asyncHandler } from "../../utils/asyncHandler.js";
-import { createProduct } from "./product.controller.js";
+import { createProduct, getProducts } from "./product.controller.js";
 const productRouter = Router()
 
 // create product // todo authentication
@@ -15,4 +15,6 @@ productRouter.post('/',
     isValid(createProductVal),
     asyncHandler(createProduct)
 )
+
+productRouter.get('/',asyncHandler(getProducts))
 export default productRouter

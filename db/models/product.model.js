@@ -59,11 +59,15 @@ const productSchema = new Schema({
         min: 0,
         default: 1
     }
-}, { timestamps: true })
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+})
 
 // virtual
 productSchema.virtual('finalPrice').get(function () {
-    return this.price - (this.price * ((discount || 0) / 100))
+    return this.price - (this.price * ((this.discount || 0) / 100))
 })
 // model
 export const Product = model('Product', productSchema)
