@@ -5,7 +5,7 @@ const generateMessages = (entity) => ({
     failToUpdate: `fail to update ${entity}`,
     createdSuccessfully: `${entity} created successfully`,
     updatedSuccessfully: `${entity} updated successfully`,
-    deletedSuccessfully: `${entity} deleted successfully`
+    deletedSuccessfully: `${entity} deleted successfully`,
 })
 export const messages = {
     category: generateMessages('category'),
@@ -13,4 +13,5 @@ export const messages = {
     brand: generateMessages('brand'),
     product: generateMessages('product'),
     user: generateMessages('user'),
+    file: { ...generateMessages('file'), required: "file is required" }
 }
