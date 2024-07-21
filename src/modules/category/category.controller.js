@@ -3,6 +3,9 @@ import { Types } from 'mongoose'
 import { Category } from "../../../db/models/category.model.js"
 import { AppError } from "../../utils/appError.js"
 import { messages } from "../../utils/constant/messages.js"
+import { Subcategory } from '../../../db/models/subcategory.model.js'
+import { Product } from '../../../db/models/product.model.js'
+import { deleteFile } from '../../utils/deleteFile.js'
 
 export const createCategory = async (req, res, next) => {
     // get data from req
@@ -59,4 +62,42 @@ export const getCategory = async (req, res, next) => {
     category ?
         res.status(200).json({ date: category, success: true })
         : next(new AppError(messages.category.notFound, 404))
+}
+
+export const deleteCategory = async (req, res, next) => {
+    // get data from req
+    const { categoryId } = req.params
+    // check existence
+    const categoryExist = await Category.findByIdAndDelete(categoryId)// {}, null
+    if (!categoryExist) {
+        return next(new AppError(messages.category.notFound, 404))
+    }
+    // prepare ids
+    const subcategories = await Subcategory.find({ category: categoryId }).select('image')
+    const products = await Product.find({ category: categoryId }).select('mainImage subImages')
+    const imagePaths = []
+
+
+    const subcategoryIds = subcategories.map(sub => {
+        imagePaths.push(sub.image)
+        return sub._id;
+    })//[1,2,3,4]
+    const productIds = products.map(prod => {
+        imagePaths.push(prod.mainImage);
+        imagePaths.push(...prod.subImages)
+        return prod._id;
+    })//[1,2,3]
+    // delete subcategories
+    await Subcategory.deleteMany({ _id: { $in: subcategoryIds } })
+    await Product.deleteMany({ _id: { $in: productIds } })
+    // delete images
+    // const imagePaths = subcategories.map(sub => sub.image)//['']
+    // for (let i = 0; i < products.length; i++) {
+    //     imagePaths.push(products[i].mainImage)
+    //     imagePaths.push(...products[i].subImages)
+    // }
+    for (let i = 0; i < imagePaths.length; i++) {
+        deleteFile(imagePaths[i])
+    }
+
 }
