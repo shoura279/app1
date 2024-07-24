@@ -6,6 +6,7 @@ import { messages } from "../../utils/constant/messages.js"
 import { Subcategory } from '../../../db/models/subcategory.model.js'
 import { Product } from '../../../db/models/product.model.js'
 import { deleteFile } from '../../utils/deleteFile.js'
+import cloudinary from '../../utils/cloudinary.js'
 
 export const createCategory = async (req, res, next) => {
     // get data from req
@@ -100,4 +101,34 @@ export const deleteCategory = async (req, res, next) => {
         deleteFile(imagePaths[i])
     }
 
+}
+
+export const createCategoryCloud = async (req, res, next) => {
+    // get data from req
+    let { name } = req.body
+    name = name.toLowerCase()
+    // check existence
+    const categoryExist = await Category.findOne({ name })// {},null
+    if (categoryExist) {
+        return next(new AppError(messages.category.alreadyExist, 409))
+    }
+    // prepare data
+    const slug = slugify(name)
+    console.log(req.file?.path);
+    const { secure_url, public_id } = await cloudinary.uploader.upload(req.file?.path, {
+        folder: 'c42/category',
+    })
+    const category = new Category({
+        name,
+        slug,
+        image: { secure_url, public_id }
+        // todo >>>> createdBy
+    })
+    // add to db
+    const createdCategory = await category.save()
+    if (!createdCategory) {
+        return next(new AppError(messages.category.failToCreate, 500))
+    }
+    // send response
+    return res.status(201).json({ message: messages.category.createdSuccessfully, success: true,data:createdCategory })
 }

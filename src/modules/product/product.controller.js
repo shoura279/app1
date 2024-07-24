@@ -5,6 +5,7 @@ import { Subcategory } from "../../../db/models/subcategory.model.js"
 import { AppError } from "../../utils/appError.js"
 import { messages } from "../../utils/constant/messages.js"
 import { Product } from "../../../db/models/product.model.js"
+import { ApiFeature } from "../../utils/apiFeature.js"
 
 export const createProduct = async (req, res, next) => {
     // return res.json(req.files)
@@ -62,8 +63,9 @@ export const createProduct = async (req, res, next) => {
         data: createdProduct
     })
 }
-
+// pagination ✅ sort ✅ select ✅ filter
 export const getProducts = async (req, res, next) => {
-    const products = await Product.find()
-    return res.json(products)
+    const apiFeature = new ApiFeature(Product.find(), req.query).pagination().sort().select().filter()
+    const products = await apiFeature.mongooseQuery
+    return res.json({ success: true, data: products })
 }

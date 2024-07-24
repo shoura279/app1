@@ -22,7 +22,7 @@ const categorySchema = new Schema(
             ref: "User",
             required: false// todo true
         },
-        image: String
+        image: Object// {secure_url:String,public_id:String}
     },
     {
         timestamps: true,
