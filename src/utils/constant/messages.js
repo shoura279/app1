@@ -6,12 +6,13 @@ const generateMessages = (entity) => ({
     createdSuccessfully: `${entity} created successfully`,
     updatedSuccessfully: `${entity} updated successfully`,
     deletedSuccessfully: `${entity} deleted successfully`,
+
 })
 export const messages = {
     category: generateMessages('category'),
     subcategory: generateMessages('subcategory'),
     brand: generateMessages('brand'),
     product: generateMessages('product'),
-    user: generateMessages('user'),
+    user: { ...generateMessages('user'), verifyAccount: "account verified successfully" },
     file: { ...generateMessages('file'), required: "file is required" }
 }
