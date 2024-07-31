@@ -14,5 +14,7 @@ export const messages = {
     brand: generateMessages('brand'),
     product: generateMessages('product'),
     user: { ...generateMessages('user'), verifyAccount: "account verified successfully" },
-    file: { ...generateMessages('file'), required: "file is required" }
+    file: { ...generateMessages('file'), required: "file is required" },
+    password: { invalidCredential: "invalidCredential" },
+    wishlist: { ...generateMessages('wishlist'), addedSuccessfully: "added successfully" }
 }

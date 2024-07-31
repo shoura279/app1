@@ -55,6 +55,11 @@ const userSchema = new Schema(
                 city: String,
                 phone: String
             }
+        ],
+        wishlist: [{
+            type: Schema.Types.ObjectId,
+            ref: "Product"
+        }
         ]
     }, {
     timestamps: true,
@@ -63,10 +68,10 @@ const userSchema = new Schema(
 }
 )
 // hooks
-userSchema.pre('save', function () {
-    console.log(this);
-    this.password = hashPassword({ password: this.password })
-})
+// userSchema.pre('save', function () {
+//     console.log(this);
+//     this.password = hashPassword({ password: this.password })
+// })
 
 // model
 export const User = model('User', userSchema)

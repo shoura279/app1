@@ -20,7 +20,7 @@ const categorySchema = new Schema(
         createdBy: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: false// todo true
+            required: true
         },
         image: Object// {secure_url:String,public_id:String}
     },

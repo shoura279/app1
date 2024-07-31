@@ -21,12 +21,11 @@ export const createCategory = async (req, res, next) => {
     }
     // prepare data
     const slug = slugify(name)
-    console.log(req.file.path);
     const category = new Category({
         name,
         slug,
         image: req.file.path,
-        // todo >>>> createdBy
+        createdBy: req.authUser._id
     })
     // add to db
     const createdCategory = await category.save()
@@ -121,8 +120,8 @@ export const createCategoryCloud = async (req, res, next) => {
     const category = new Category({
         name,
         slug,
-        image: { secure_url, public_id }
-        // todo >>>> createdBy
+        image: { secure_url, public_id },
+        createdBy:req.authUser._id
     })
     // add to db
     const createdCategory = await category.save()

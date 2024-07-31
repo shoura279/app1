@@ -15,7 +15,7 @@ export const signup = async (req, res, next) => {
         return next(new AppError(messages.user.alreadyExist, 409))
     }
     // prepare data
-    // password = hashPassword({ password })
+    password = hashPassword({ password })
     const user = new User({
         userName,
         email,
@@ -60,7 +60,7 @@ export const login = async (req, res, next) => {
     // get data from req
     const { email, password, phone } = req.body
     // check existence
-    const userExist = await User.findOne({ $or: [{ email }, { phone }] })
+    const userExist = await User.findOne({ $or: [{ email }, { phone }], status: status.VERIFIED })
     if (!userExist) {
         return next(new AppError(messages.user.notFound, 404))
     }
