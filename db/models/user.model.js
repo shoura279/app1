@@ -2,7 +2,6 @@ import path from 'path'
 import dotenv from 'dotenv'
 import { model, Schema } from "mongoose";
 import { roles, status } from "../../src/utils/constant/enums.js";
-import { hashPassword } from '../../src/utils/hash-and-compare.js';
 dotenv.config({ path: path.resolve('./config/.env') })
 // schema
 const userSchema = new Schema(
