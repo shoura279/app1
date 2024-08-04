@@ -69,5 +69,12 @@ const productSchema = new Schema({
 productSchema.virtual('finalPrice').get(function () {
     return this.price - (this.price * ((this.discount || 0) / 100))
 })
+productSchema.methods.inStock = function (quantity) {
+    // if (this.stock < quantity) {
+    //     return false
+    // }
+    // return true
+    return this.stock >= quantity ? true : false
+}
 // model
 export const Product = model('Product', productSchema)

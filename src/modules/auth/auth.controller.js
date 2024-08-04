@@ -6,6 +6,7 @@ import { comparePassword, hashPassword } from '../../utils/hash-and-compare.js'
 import { sendEmail } from '../../utils/email.js'
 import { generateToken, verifyToken } from "../../utils/token.js"
 import { status } from "../../utils/constant/enums.js"
+import { Cart } from "../../../db/index.js"
 export const signup = async (req, res, next) => {
     // get data from req
     let { userName, email, password, phone, DOB } = req.body
@@ -50,6 +51,7 @@ export const verifyAccount = async (req, res, next) => {
     if (!user) {
         return next(new AppError(messages.user.notFound, 404))
     }
+    await Cart.create({ user: user._id, products: [] })
     return res.status(200).json({
         message: messages.user.verifyAccount,
         success: true

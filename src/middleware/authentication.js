@@ -11,7 +11,7 @@ export const isAuthenticate = () => {
         }
         let payload = null
         try {
-            payload = verifyToken({ token })
+            payload = verifyToken({ token,  })
         } catch (error) {
             return next(new AppError(error.message, 500))
         }

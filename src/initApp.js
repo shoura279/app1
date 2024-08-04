@@ -1,11 +1,5 @@
 import { connectDB } from "../db/connection.js"
-import adminRouter from "./modules/admin/admin.router.js"
-import authRouter from "./modules/auth/auth.router.js"
-import brandRouter from "./modules/brand/brand.router.js"
-import categoryRouter from "./modules/category/category.router.js"
-import productRouter from "./modules/product/product.router.js"
-import subcategoryRouter from "./modules/subcategory/subcategory.router.js"
-import wishlistRouter from "./modules/wishlist/wishlist.router.js"
+import * as allRouters from './index.js'
 import { globalErrorHandling } from "./utils/asyncHandler.js"
 
 export const initApp = (app, express) => {
@@ -15,13 +9,16 @@ export const initApp = (app, express) => {
 
     connectDB()
     const port = process.env.PORT || 3000
-    app.use('/category', categoryRouter)
-    app.use('/sub-category', subcategoryRouter)
-    app.use('/brand', brandRouter)
-    app.use('/product', productRouter)
-    app.use('/auth', authRouter)
-    app.use('/admin', adminRouter)
-    app.use('/wishlist', wishlistRouter)
+    app.use('/category', allRouters.categoryRouter)
+    app.use('/sub-category', allRouters.subcategoryRouter)
+    app.use('/brand', allRouters.brandRouter)
+    app.use('/product', allRouters.productRouter)
+    app.use('/auth', allRouters.authRouter)
+    app.use('/admin', allRouters.adminRouter)
+    app.use('/wishlist', allRouters.wishlistRouter)
+    app.use('/review', allRouters.reviewRouter)
+    app.use('/coupon', allRouters.couponRouter)
+    app.use('/cart', allRouters.cartRouter)
     app.use(globalErrorHandling)
     app.listen(port, () => console.log('server is running on port', port))
 }

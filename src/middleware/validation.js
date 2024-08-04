@@ -14,7 +14,8 @@ export const generalFields = {
     password: joi.string().required(),
     rePassword: joi.string().valid(joi.ref('password')),
     // objectId: joi.string().hex().length(24)
-    objectId: joi.custom(validateObjectId)
+    objectId: joi.custom(validateObjectId),
+    comment: joi.string()
 }
 export const isValid = (schema) => {
     return (req, res, next) => {

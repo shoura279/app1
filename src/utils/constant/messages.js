@@ -16,5 +16,7 @@ export const messages = {
     user: { ...generateMessages('user'), verifyAccount: "account verified successfully" },
     file: { ...generateMessages('file'), required: "file is required" },
     password: { invalidCredential: "invalidCredential" },
-    wishlist: { ...generateMessages('wishlist'), addedSuccessfully: "added successfully" }
+    wishlist: { ...generateMessages('wishlist'), addedSuccessfully: "added successfully" },
+    review: generateMessages('review'),
+    coupon:generateMessages('coupon')
 }
