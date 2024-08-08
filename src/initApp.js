@@ -19,6 +19,8 @@ export const initApp = (app, express) => {
     app.use('/review', allRouters.reviewRouter)
     app.use('/coupon', allRouters.couponRouter)
     app.use('/cart', allRouters.cartRouter)
+    app.use('/user', allRouters.userRouter)
+    app.use('/order', allRouters.orderRouter)
     app.use(globalErrorHandling)
     app.listen(port, () => console.log('server is running on port', port))
 }

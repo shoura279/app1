@@ -8,4 +8,6 @@ import authRouter from "./modules/auth/auth.router.js";
 import reviewRouter from "./modules/review/review.router.js";
 import couponRouter from "./modules/coupon/coupon.router.js";
 import cartRouter from "./modules/cart/cart.router.js";
-export { cartRouter, categoryRouter, subcategoryRouter, brandRouter, productRouter, wishlistRouter, adminRouter, authRouter, reviewRouter, couponRouter }
+import userRouter from "./modules/user/user.router.js";
+import orderRouter from "./modules/order/order.router.js";
+export { orderRouter, userRouter, cartRouter, categoryRouter, subcategoryRouter, brandRouter, productRouter, wishlistRouter, adminRouter, authRouter, reviewRouter, couponRouter }
