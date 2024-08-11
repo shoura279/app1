@@ -1,3 +1,4 @@
+import Stripe from "stripe"
 import { Cart, Coupon, Order, Product } from "../../../db/index.js"
 import { AppError } from "../../utils/appError.js"
 import { orderStatus } from "../../utils/constant/enums.js"
@@ -6,13 +7,16 @@ import { messages } from "../../utils/constant/messages.js"
 export const createOrder = async (req, res, next) => {
     // get data from req
     const { address, phone, coupon, payment } = req.body
-    // check coupon
-    const couponExist = await Coupon.findOne({ couponCode: coupon })// {} , null
-    if (!couponExist) {
-        return next(new AppError(messages.coupon.notFound, 404))
-    }
-    if (couponExist.fromDate > Date.now() || couponExist.toDate < Date.now()) {
-        return next(new AppError('invalid coupon', 404))
+    let couponExist = ''
+    if (coupon) {
+        // check coupon
+        couponExist = await Coupon.findOne({ couponCode: coupon })// {} , null
+        if (!couponExist) {
+            return next(new AppError(messages.coupon.notFound, 404))
+        }
+        if (couponExist.fromDate > Date.now() || couponExist.toDate < Date.now()) {
+            return next(new AppError('invalid coupon', 404))
+        }
     }
     // check cart
     const cart = await Cart.findOne({ user: req.authUser._id }).populate('products.productId')// {},null
@@ -57,8 +61,30 @@ export const createOrder = async (req, res, next) => {
     })
     // save to db
     const orderCreated = await order.save()
-    if (payment == 'visa') { 
-        
+    if (payment == 'visa') {
+        const stripe = new Stripe(process.env.STRIPE_KEY)
+        const session = await stripe.checkout.sessions.create({
+            mode: "payment",
+            payment_method_types: ['card'],
+            success_url: 'https://google.com',
+            cancel_url: "https://www.facebock.com",
+            line_items: orderCreated.products.map(product => {
+                return {
+                    price_data: {
+                        currency: 'egp',
+                        product_data: {
+                            name: product.title,
+                            // images:product.
+                        },
+                        unit_amount: product.itemPrice*100
+                    },
+                    quantity: product.quantity
+                }
+            })
+        })
+        return res.status(200).json({ message: 'order created successfully', success: true, url: session.url })
     }
-    // return res.status(201).json({ message: 'order created successfully', success: true })
+    return res.status(201).json({ message: 'order created successfully', success: true })
 }
+// change order status 
+// 4000.0

@@ -24,7 +24,7 @@ export const addToCart = async (req, res, next) => {
         },
         { new: true }
     )
-    let data = userCart
+    let data = isProductInCart
     if (!isProductInCart) {
         data = await Cart.findOneAndUpdate({ user: req.authUser._id },
             { $push: { products: { productId, quantity } } }, { new: true }
