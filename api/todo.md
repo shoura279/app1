@@ -4,5 +4,5 @@
 # cart ✅
 # reset passwords - forget password ✅
 # cron job ✅
-# order 
-# payment gateway
+# order ✅
+# payment gateway ✖

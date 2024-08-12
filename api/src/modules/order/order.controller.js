@@ -68,6 +68,7 @@ export const createOrder = async (req, res, next) => {
             payment_method_types: ['card'],
             success_url: 'https://google.com',
             cancel_url: "https://www.facebock.com",
+            client_reference_id: cart._id.toString(),
             line_items: orderCreated.products.map(product => {
                 return {
                     price_data: {
@@ -76,7 +77,7 @@ export const createOrder = async (req, res, next) => {
                             name: product.title,
                             // images:product.
                         },
-                        unit_amount: product.itemPrice*100
+                        unit_amount: product.itemPrice * 100
                     },
                     quantity: product.quantity
                 }
@@ -86,5 +87,5 @@ export const createOrder = async (req, res, next) => {
     }
     return res.status(201).json({ message: 'order created successfully', success: true })
 }
-// change order status 
+// change order status
 // 4000.0
