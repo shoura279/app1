@@ -69,6 +69,9 @@ export const createOrder = async (req, res, next) => {
             success_url: 'https://google.com',
             cancel_url: "https://www.facebock.com",
             client_reference_id: cart._id.toString(),
+            metadata: {
+                orderID: orderCreated._id.toString()
+            },
             line_items: orderCreated.products.map(product => {
                 return {
                     price_data: {

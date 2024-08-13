@@ -22,17 +22,20 @@ const app = express()
 dotenv.config({ path: path.resolve('./config/.env') })
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'].toString();
-    const stripe = new Stripe(process.env.STRIPE_KEY)
+    const stripe = new Stripe("sk_test_51PlBS7GQzGATwKdXhoni4bb2pEU9yqJzmJYDsnlzkwz1Q8GseaUBONupyaXrSowCBwOdzfQbqx1OXI4AupXFksr500WpRgbD09")
     let event;
 
-    event = stripe.webhooks.constructEvent(req.body, sig, "whsec_507668cffb0f3fb8dc1126f548fdd01243b463356b05d8cec8f7f06eeab54ebf");
+    event = stripe.webhooks.constructEvent(req.body, sig, "whsec_w9T31QV1sENOie5hhlMDviiqO5RR0wF0");
 
     if (event.type == 'checkout.session.completed') {
+
+        console.log(event);
+
         const object = event.data.object;
         // logic
         // cart
         console.log(object.client_reference_id);
-        
+
         const cart = await Cart.findById(object.client_reference_id)
         for (const product of cart.products) {
             await Product.findByIdAndUpdate(product.productId, { $set: { $inc: { stock: -product.quantity } } })
