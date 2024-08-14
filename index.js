@@ -21,11 +21,14 @@ const app = express()
 
 dotenv.config({ path: path.resolve('./config/.env') })
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+
+    console.log("test");
+    
     const sig = req.headers['stripe-signature'].toString();
     const stripe = new Stripe("sk_test_51PlBS7GQzGATwKdXhoni4bb2pEU9yqJzmJYDsnlzkwz1Q8GseaUBONupyaXrSowCBwOdzfQbqx1OXI4AupXFksr500WpRgbD09")
     let event;
 
-    event = stripe.webhooks.constructEvent(req.body, sig, "whsec_bMewvPkLENhPOB59Ix5jq6Vis3TaPNYV");
+    event = stripe.webhooks.constructEvent(req.body, sig, "whsec_w9T31QV1sENOie5hhlMDviiqO5RR0wF0");
 
     if (event.type == 'checkout.session.completed') {
 
