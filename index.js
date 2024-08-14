@@ -22,7 +22,7 @@ const app = express()
 dotenv.config({ path: path.resolve('./config/.env') })
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'].toString();
-    const stripe = new Stripe("sk_test_51NlrAeGR9Ya7i8epSwqhE8bvXjh7kUmpI3qmGi1m7sLhJYddjhrO8aPkgphH5NGFxk6gDs7pkPL47XDZGiGE0aJW004YK9FoM2")
+    const stripe = new Stripe("sk_test_51PlBS7GQzGATwKdXhoni4bb2pEU9yqJzmJYDsnlzkwz1Q8GseaUBONupyaXrSowCBwOdzfQbqx1OXI4AupXFksr500WpRgbD09")
     let event;
 
     event = stripe.webhooks.constructEvent(req.body, sig, "whsec_bMewvPkLENhPOB59Ix5jq6Vis3TaPNYV");
