@@ -21,6 +21,9 @@ export const initApp = (app, express) => {
     app.use('/cart', allRouters.cartRouter)
     app.use('/user', allRouters.userRouter)
     app.use('/order', allRouters.orderRouter)
+    app.all('*', (req, res, next) => {
+        res.json({ message: "invalid url" })
+    })
     app.use(globalErrorHandling)
     app.listen(port, () => console.log('server is running on port', port))
 }

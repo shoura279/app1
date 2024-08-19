@@ -1,11 +1,9 @@
-import path from 'path'
 import dotenv from 'dotenv'
 import express from 'express'
+import path from 'path'
 import Stripe from 'stripe'
-import schedule from 'node-schedule'
+import { Cart, Product } from './db/index.js'
 import { initApp } from './src/initApp.js'
-import { Cart, Product, User } from './db/index.js'
-import { status } from './src/utils/constant/enums.js'
 const app = express()
 // schedule.scheduleJob('1 1 1 * * *', async function () {
 //     const users = await User.find({ status: status.PENDING, createdAt: { $lte: Date.now() - 30 * 24 * 60 * 60 * 1000 } }).lean()
@@ -23,7 +21,7 @@ dotenv.config({ path: path.resolve('./config/.env') })
 app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
 
     console.log("test");
-    
+
     const sig = req.headers['stripe-signature'].toString();
     const stripe = new Stripe("sk_test_51PlBS7GQzGATwKdXhoni4bb2pEU9yqJzmJYDsnlzkwz1Q8GseaUBONupyaXrSowCBwOdzfQbqx1OXI4AupXFksr500WpRgbD09")
     let event;
